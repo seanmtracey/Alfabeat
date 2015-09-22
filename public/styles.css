@@ -49,8 +49,8 @@ body {
 
 #silhouette span {
 	position: absolute;
-	width: 40px;
-	height: 40px;
+	width: 44px;
+	height: 44px;
 	border-radius: 100%;
 	background-color: transparent;
 	cursor: pointer;
@@ -66,31 +66,31 @@ span[data-is-disabled=true] {
 }
 
 span#one {
-    top: 259px;
-    left: 210px;
+    top: 257px;
+    left: 208px;
 }
 
 span#two {
-	top: 259px;
-    left: 116px;
+	top: 257px;
+    left: 114px;
 }
 
 span#three {
-    top: 208px;
-    left: 163px;
+    top: 206px;
+    left: 161px;
 }
 
 span#four {
-	top: 158px;
-	left: 210px;    
+	top: 156px;
+	left: 208px;    
 }
 
 span#five {
-    top: 158px;
-    left: 116px;
+    top: 156px;
+    left: 114px;
 }
 
 span#six {
-	top: 105px;
-	left: 163px;
+	top: 103px;
+	left: 161px;
 }

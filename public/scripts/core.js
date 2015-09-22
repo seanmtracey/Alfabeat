@@ -46,6 +46,14 @@ var __alfabeat_v1_1_0 = (function(){
 		}
 	];
 
+	function storeToggleStates(){
+		localStorage.setItem('toggleStates', JSON.stringify(disabled));
+	}
+
+	function getToggleStates(){
+		return JSON.parse(localStorage.getItem('toggleStates'));
+	}
+
 	function drawIndicatorState(){
 
 		var i = indicatorPositions,
@@ -210,17 +218,21 @@ var __alfabeat_v1_1_0 = (function(){
 			
 			(function(idx){
 				
-				toggles[p].addEventListener('click', function(){
+				toggles[idx].addEventListener('click', function(){
 					
-					if(this.getAttribute('data-is-disabled') === "false"){
-						this.setAttribute('data-is-disabled', "true");
+					console.log("CLICK", idx);
+
+					if(disabled[idx] === false){
+						toggles[idx].setAttribute('data-is-disabled', "true");
 						disabled[idx] = true;
 					} else {
-						this.setAttribute('data-is-disabled', "false");
+						toggles[idx].setAttribute('data-is-disabled', "false");
 						disabled[idx] = false;
 					}
 
 					console.log(disabled);
+
+					storeToggleStates();
 
 				});
 
@@ -260,7 +272,11 @@ var __alfabeat_v1_1_0 = (function(){
 				for(var n = 0; n < data.files.length; n += 1){
 					hits[n] = false;
 					timeSince[n] = performance.now();
-					disabled[n] = false;
+
+					if(disabled[n] === undefined){
+						disabled[n] = false;	
+					}
+
 				}
 
 				cb(data.files);
@@ -289,6 +305,18 @@ var __alfabeat_v1_1_0 = (function(){
 		ctx.fillStyle = '#91e1ad';
 
 		toggles = silhouette.getElementsByTagName('span');
+
+		if(getToggleStates() !== null){
+			disabled = getToggleStates();
+		}
+
+		console.log(disabled);
+
+		for(var g = 0; g < disabled.length; g += 1){
+			if(disabled[g] === true){
+				toggles[g].setAttribute('data-is-disabled', 'true');
+			}
+		}
 
 		addEvents();
 

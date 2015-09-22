@@ -67,6 +67,8 @@ app.get('/test-stop', function(req, res){
 
 	clearInterval(t);
 
+	res.send("Test Ended");
+
 });
 
 app.get('/test-data', function(req, res){
