@@ -6,6 +6,9 @@ var express = require('express'),
 	serialport = require('serialport'),
 	io = require('socket.io').listen(server, { log: false });
 
+// t is the timeout for our test-date endpoint
+var t = undefined;
+
 for(var _ = 0; _ < process.argv.length; _ += 1){
 
 	if(process.argv[_] === "--port" || process.argv[_] === "-port" || process.argv[_] === "-p"){
@@ -60,13 +63,43 @@ app.get('/which-sounds', function(req, res){
 
 });
 
+app.get('/test-stop', function(req, res){
+
+	clearInterval(t);
+
+});
+
+app.get('/test-data', function(req, res){
+
+	t = setInterval(function(){
+
+		var spoofData = [0,0,0,0,0,0];
+
+		for(var s = 0;  s < spoofData.length; s += 1){
+
+			spoofData[s] = Math.random() * 1000 | 0;
+
+			(Math.random() < 0.3) ? spoofData[s] = 0 : spoofData[s] = spoofData[s];
+
+		}
+
+		console.log(spoofData);
+
+		io.sockets.emit('drums', {
+			values : spoofData
+		});
+
+	}, 5);
+
+	res.send("Running Test");
+
+});
+
 io.sockets.on('connection', function (socket) {
 
 	console.log("A connection was made over WebSockets");
 
 });
-
-
 
 serialport.list(function (err, ports) {
 

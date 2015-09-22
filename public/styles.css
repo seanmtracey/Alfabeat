@@ -27,7 +27,7 @@ body{
 }
 
 #silhouette{
-	width: 600px;
+	width: 365px;
 	height: 330px;
 	background-image: url('assets/images/silhouette.png');
 	background-size: cover;
@@ -36,13 +36,13 @@ body{
     left: 50%;
     top: 50%;
     margin-top: -165px;
-    margin-left: -300px;
+    margin-left: -182px;
 }
 
 #sCanvas{
 	position: absolute;
-	left: 220px;
-	top: 105px;
+	left: 111px;
+	top: 104px;
 	width: 140px;
 	height: 200px;
 }

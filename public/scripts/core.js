@@ -25,20 +25,20 @@ var __alfabeat_v1_0_0 = (function(){
 		disabled = [];
 
 	var indicatorPositions = [{
-			x : 118,
-			y : 175
+			x : 119,
+			y : 174
 		},{
 			x : 25,
 			y : 174
 		},{
 			x : 72,
-			y : 124
+			y : 123
 		},{
 			x : 118,
-			y : 73
+			y : 74
 		},{
-			x : 25,
-			y : 72
+			x : 26,
+			y : 73
 		},{
 			x : 72,
 			y : 20
@@ -59,7 +59,6 @@ var __alfabeat_v1_0_0 = (function(){
 			if(iS[idx] === true){
 				ctx.beginPath();
 				ctx.arc(i[idx].x, i[idx].y, 20, 0, 2 * Math.PI, false);
-				ctx.fillStyle = 'green';
 				ctx.fill();
 			}
 
@@ -81,10 +80,10 @@ var __alfabeat_v1_0_0 = (function(){
 	function mapSounds(sensor){
 
 		// Sound mappings for 6 sensors
-		// var soundsForPins = [5, 2, 1, 6, 5, 0, 5];
+		var soundsForPins = [5, 2, 1, 6, 	5, 0, 5];
 
 		// We only used four sensors
-		var soundsForPins = [5, 6, 2, 3];
+		// var soundsForPins = [5, 6, 2, 3];
 
 		return soundsForPins[sensor];
 
@@ -267,6 +266,8 @@ var __alfabeat_v1_0_0 = (function(){
 		silhouette = document.getElementById('silhouette');
 		canvas = document.getElementById('sCanvas');
 		ctx = canvas.getContext('2d');
+
+		ctx.fillStyle = '#91e1ad';
 
 		addEvents();
 
