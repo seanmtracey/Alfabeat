@@ -14,8 +14,11 @@ var __alfabeat_v1_1_0 = (function(){
 		hits = [],
 		timeSince = [];
 
+	// low is the maximum value we need to recieve from the sensors to detect that they have been hit
+	// peak is the lowest value we need to reset the sensor after a hit
+	// timeout is how much time has to have elapsed before we let the same sensor be hit again and play. 
 	var low = 5,
-		max = 800,
+		peak = 800,
 		timeout = 0;
 
 	var silhouette = undefined,
@@ -25,6 +28,7 @@ var __alfabeat_v1_1_0 = (function(){
 		ctx = undefined,
 		disabled = [];
 
+	// Where do we draw the indicators on our canvas
 	var indicatorPositions = [{
 			x : 119,
 			y : 174
@@ -180,7 +184,7 @@ var __alfabeat_v1_1_0 = (function(){
 					}
 
 					
-				} else if(vals[k] > max && hits[k] === true){
+				} else if(vals[k] > peak && hits[k] === true){
 					hits[k] = false;
 				}
 
@@ -308,12 +312,14 @@ var __alfabeat_v1_1_0 = (function(){
 		ctx.fillStyle = '#91e1ad';
 
 		toggles = silhouette.getElementsByTagName('span');
+		
+		// Check if there is a stored state from a previous session of which sensors are
+		// disabled and set them when the app is loaded. Then, change the <span> attributes
+		// to reflect the current state of the disabled array;
 
 		if(getToggleStates() !== null){
 			disabled = getToggleStates();
 		}
-
-		console.log(disabled);
 
 		for(var g = 0; g < disabled.length; g += 1){
 			if(disabled[g] === true){
