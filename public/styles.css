@@ -39,6 +39,14 @@ body{
     margin-left: -300px;
 }
 
+#sCanvas{
+	position: absolute;
+	left: 220px;
+	top: 105px;
+	width: 140px;
+	height: 200px;
+}
+
 #silhouette span{
 	position: absolute;
 	width: 40px;

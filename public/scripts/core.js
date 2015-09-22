@@ -20,7 +20,37 @@ var __alfabeat_v1_0_0 = (function(){
 
 	var silhouette = undefined,
 		indicators = undefined,
+		canvas = undefined,
+		content = undefined,
 		disabled = [];
+
+	var indicatorPositions = [{
+			x : 0,
+			y : 0
+		},{
+			x : 0,
+			y : 0
+		},{
+			x : 0,
+			y : 0
+		},{
+			x : 0,
+			y : 0
+		},{
+			x : 0,
+			y : 0
+		},{
+			x : 0,
+			y : 0
+		}
+	];
+
+	function drawIndicatorState(){
+
+		var iP = indicatorPositions.length,
+			idx = 0;
+
+	}
 
 	// The sounds for Alfabeat are loaded alphabetically from the /which-sounds
 	// endpoint of our Express app.
@@ -213,6 +243,8 @@ var __alfabeat_v1_0_0 = (function(){
 
 		silhouette = document.getElementById('silhouette');
 		indicators = silhouette.getElementsByTagName('span');
+		canvas = document.getElementById('canvas');
+		context = canvas.getContext('2d');
 
 		addEvents();
 
