@@ -89,7 +89,7 @@ var __alfabeat_v1_1_0 = (function(){
 	function mapSounds(sensor){
 
 		// Sound mappings for 6 sensors
-		var soundsForPins = [5, 2, 1, 6, 	5, 0, 5];
+		var soundsForPins = [5, 2, 1, 6, 5, 0, 5];
 
 		// We only used four sensors
 		// var soundsForPins = [5, 6, 2, 3];
