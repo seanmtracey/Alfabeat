@@ -232,7 +232,10 @@ var __alfabeat_v1_1_0 = (function(){
 
 					console.log(disabled);
 
+					hits[idx] = false;
+
 					storeToggleStates();
+					drawIndicatorState();
 
 				});
 
