@@ -178,6 +178,8 @@ var __alfabeat_v1_0_0 = (function(){
 
 			}
 
+			requestAnimationFrame(drawIndicatorState);
+
 		});
 
 	}
