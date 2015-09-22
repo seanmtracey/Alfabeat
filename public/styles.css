@@ -1,13 +1,13 @@
 @charset "UTF-8";
 /* CSS Document */
 
-*{
+* {
 	-webkit-transform: translateZ(0);
 	/*-webkit-perspective: 1000;*/
 	/*-webkit-backface-visibility: hidden;*/
 }
 
-html{
+html {
 	height:100%;
 	width:100%;
 	background-color:rgb(245,245,245);
@@ -16,7 +16,7 @@ html{
 
 }
 
-body{
+body {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size:12pt;
 	margin:0px;
@@ -26,7 +26,7 @@ body{
 	height:100%;
 }
 
-#silhouette{
+#silhouette {
 	width: 365px;
 	height: 330px;
 	background-image: url('assets/images/silhouette.png');
@@ -39,7 +39,7 @@ body{
     margin-left: -182px;
 }
 
-#sCanvas{
+#sCanvas {
 	position: absolute;
 	left: 111px;
 	top: 104px;
@@ -47,57 +47,50 @@ body{
 	height: 200px;
 }
 
-#silhouette span{
+#silhouette span {
 	position: absolute;
 	width: 40px;
 	height: 40px;
 	border-radius: 100%;
-	/*background-color: red;*/
+	background-color: transparent;
 	cursor: pointer;
+	opacity: 1;
 }
 
-span[data-is-hit=true]{
+span[data-is-hit=true] {
 	background-color: #76D470;
 }
 
-span[data-is-disabled=true]{
-	background-color: #D47070;	
+span[data-is-disabled=true] {
+	background-color: #d85452 !important;
 }
 
-span#one{
+span#one {
     top: 259px;
-    left: 318px;
+    left: 210px;
 }
 
-span#two{
+span#two {
 	top: 259px;
-    left: 224px;
+    left: 116px;
 }
 
-span#three{
+span#three {
     top: 208px;
-    left: 271px;
+    left: 163px;
 }
 
-span#four{
+span#four {
 	top: 158px;
-    left: 224px;
+	left: 210px;    
 }
 
-span#five{
-	left: 318px;
+span#five {
     top: 158px;
+    left: 116px;
 }
 
-span#six{
-	top: 106px;
-	left: 271px;
+span#six {
+	top: 105px;
+	left: 163px;
 }
-
-span#seven{
-    right: 62px;
-    top: 78px;
-}
-
-
-

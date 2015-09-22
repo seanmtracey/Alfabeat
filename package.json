@@ -1,7 +1,7 @@
 {
-  "name": "BuzzJam",
-  "description": "The BuzzJam Human Drum Set",
-  "version": "0.0.1",
+  "name": "Alfabeat",
+  "description": "The Alfabeat Human Drum Set, made for BuzzJam",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "express": "4.13.3",
@@ -9,5 +9,8 @@
     "request" : "2.27.0",
     "querystring" : "0.2.0",
     "serialport" : "1.7.4"
+  },
+  "scripts" : {
+    "start" : "node app.js"
   }
 }

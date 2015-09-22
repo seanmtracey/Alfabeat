@@ -1,4 +1,4 @@
-var __alfabeat_v1_0_0 = (function(){
+var __alfabeat_v1_1_0 = (function(){
 
 	'use strict';
 
@@ -20,6 +20,7 @@ var __alfabeat_v1_0_0 = (function(){
 
 	var silhouette = undefined,
 		indicators = undefined,
+		toggles = undefined,
 		canvas = undefined,
 		ctx = undefined,
 		disabled = [];
@@ -164,7 +165,7 @@ var __alfabeat_v1_0_0 = (function(){
 				if(vals[k] < low && hits[k] === false){
 					hits[k] = true;
 
-					if(performance.now() - timeSince[k] > timeout){
+					if(performance.now() - timeSince[k] > timeout && disabled[k] !== true){
 						timeSince[k] = performance.now();
 						console.log(k);
 						playSound(mapSounds(k));	
@@ -205,9 +206,27 @@ var __alfabeat_v1_0_0 = (function(){
 
 		}, true);
 
-		canvas.addEventListener('click', function(e){
-			console.log(e.layerX, e.layerY);
-		}, false);
+		for(var p = 0; p < toggles.length; p += 1){
+			
+			(function(idx){
+				
+				toggles[p].addEventListener('click', function(){
+					
+					if(this.getAttribute('data-is-disabled') === "false"){
+						this.setAttribute('data-is-disabled', "true");
+						disabled[idx] = true;
+					} else {
+						this.setAttribute('data-is-disabled', "false");
+						disabled[idx] = false;
+					}
+
+					console.log(disabled);
+
+				});
+
+			})(p);
+			
+		}
 
 	}
 
@@ -269,6 +288,8 @@ var __alfabeat_v1_0_0 = (function(){
 
 		ctx.fillStyle = '#91e1ad';
 
+		toggles = silhouette.getElementsByTagName('span');
+
 		addEvents();
 
 		getSamples(loadSamples);
@@ -286,5 +307,5 @@ var __alfabeat_v1_0_0 = (function(){
 })();
 
 (function(){
-	__alfabeat_v1_0_0.init();
+	__alfabeat_v1_1_0.init();
 })();
