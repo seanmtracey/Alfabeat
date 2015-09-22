@@ -21,34 +21,51 @@ var __alfabeat_v1_0_0 = (function(){
 	var silhouette = undefined,
 		indicators = undefined,
 		canvas = undefined,
-		content = undefined,
+		ctx = undefined,
 		disabled = [];
 
 	var indicatorPositions = [{
-			x : 0,
-			y : 0
+			x : 118,
+			y : 175
 		},{
-			x : 0,
-			y : 0
+			x : 25,
+			y : 174
 		},{
-			x : 0,
-			y : 0
+			x : 72,
+			y : 124
 		},{
-			x : 0,
-			y : 0
+			x : 118,
+			y : 73
 		},{
-			x : 0,
-			y : 0
+			x : 25,
+			y : 72
 		},{
-			x : 0,
-			y : 0
+			x : 72,
+			y : 20
 		}
 	];
 
 	function drawIndicatorState(){
 
-		var iP = indicatorPositions.length,
+		var i = indicatorPositions,
+			iS = hits,
+			iP = indicatorPositions.length,
 			idx = 0;
+
+		ctx.clearRect(0,0,140,200);
+
+		while(idx < iP){
+
+			if(iS[idx] === true){
+				ctx.beginPath();
+				ctx.arc(i[idx].x, i[idx].y, 20, 0, 2 * Math.PI, false);
+				ctx.fillStyle = 'green';
+				ctx.fill();
+			}
+
+			idx += 1;
+
+		}
 
 	}
 
@@ -187,6 +204,10 @@ var __alfabeat_v1_0_0 = (function(){
 
 		}, true);
 
+		canvas.addEventListener('click', function(e){
+			console.log(e.layerX, e.layerY);
+		}, false);
+
 	}
 
 	function loadSamples(passedSamples){
@@ -242,13 +263,14 @@ var __alfabeat_v1_0_0 = (function(){
 		console.log(socket);
 
 		silhouette = document.getElementById('silhouette');
-		indicators = silhouette.getElementsByTagName('span');
-		canvas = document.getElementById('canvas');
-		context = canvas.getContext('2d');
+		canvas = document.getElementById('sCanvas');
+		ctx = canvas.getContext('2d');
 
 		addEvents();
 
 		getSamples(loadSamples);
+
+		drawIndicatorState();
 
 	}
 
