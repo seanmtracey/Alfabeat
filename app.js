@@ -77,17 +77,22 @@ serialport.list(function (err, ports) {
 
 	for(var g = 0; g < ports.length; g += 1){
 
-		console.log(g + ") " + ports[g].comName);
+		console.log("\t" + g + ") " + ports[g].comName);
 
 	}
 
 	var stdin = process.stdin, stdout = process.stdout;
 
 	stdin.resume();
-	stdout.write("Enter the number of the device you would like to use: ");
+	stdout.write("\nEnter the number of the device you would like to use: ");
 
 	stdin.once('data', function(data) {
 		var deviceNumber = parseInt(data);
+
+		if(deviceNumber > ports.length - 1 || deviceNumber < 0){
+			console.log("That isn't a valid number... Exiting script...");
+			process.exit(0);
+		}
 
 		console.log("Attempting to connect to device: " + deviceNumber);
 
