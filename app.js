@@ -99,9 +99,7 @@ io.sockets.on('connection', function (socket) {
 
 });
 
-
-
-serialport.list(function (err, ports) {
+function handleDevice(err, ports){
 
 	console.log("\nAvailable serial devices:\n");
 
@@ -117,9 +115,16 @@ serialport.list(function (err, ports) {
 	var stdin = process.stdin, stdout = process.stdout;
 
 	stdin.resume();
-	stdout.write("\nEnter the number of the device you would like to use: ");
+	stdout.write("\nEnter the number of the device you would like to use or enter 'r' to reload the list: ");
 
 	stdin.once('data', function(data) {
+
+		if(data.toString().trim() === "r"){
+			console.log("\nGetting list of devices...");
+			serialport.list(handleDevice);
+			return;	
+		}
+
 		var deviceNumber = parseInt(data);
 
 		if(deviceNumber > ports.length - 1 || deviceNumber < 0){
@@ -218,4 +223,6 @@ serialport.list(function (err, ports) {
 
 	});
 
-});
+}
+
+serialport.list(handleDevice);

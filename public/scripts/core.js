@@ -1,4 +1,4 @@
-var __alfabeat_v1_1_0 = (function(){
+var __alfabeat = (function(){
 
 	'use strict';
 
@@ -344,5 +344,5 @@ var __alfabeat_v1_1_0 = (function(){
 })();
 
 (function(){
-	__alfabeat_v1_1_0.init();
+	__alfabeat.init();
 })();
