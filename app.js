@@ -36,7 +36,7 @@ console.log("Server started.\nAvailable on localhost:" + port);
 // of the project and send the list back to the client as a JSON response
 // The client then loads the resources statically.
 
-app.get('/which-sounds', function(req, res){
+app.get('/which-sounds/:type', function(req, res){
 
 	var files = fs.readdir(__dirname + '/sounds', function(error, files){
 
@@ -46,7 +46,15 @@ app.get('/which-sounds', function(req, res){
 
 		for(var x = 0; x < files.length; x += 1){
 
-			fullPathFiles[x] = '/sounds/' + files[x]; 
+			if(req.params.type !== undefined){
+
+				if(files[x].indexOf(req.params.type) > -1){
+					fullPathFiles.push('/sounds/' + files[x]);
+				}
+
+			} else if(files[x].indexOf(".ogg") > -1){
+				fullPathFiles[x].push('/sounds/' + files[x]);
+			}
 
 		}
 

@@ -4,6 +4,7 @@ var __alfabeat = (function(){
 
 	window.audioContext = (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext);
 	window.requestAnimationFrame = (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame);
+	window.performance = (window.performance || Date)
 
 	var context = undefined,
 		bufferLoader = undefined,
@@ -269,11 +270,35 @@ var __alfabeat = (function(){
 
 	}
 
+	function iOSUnmute(){
+
+		playSound(0);
+		window.removeEventListener('touchend', iOSUnmute, false);
+
+	}
+
 	function getSamples(cb){
+
+		var audEl = document.createElement('audio'),
+			playsOGG = audEl.canPlayType('audio/ogg'),
+			type = ".ogg";
+
+		if(playsOGG === ""){
+			type = ".mp3";
+
+			if (window.navigator.userAgent.match(/iPad/i) || window.navigator.userAgent.match(/iPhone/i)) {
+
+				// This is iOS. Bind a touch event to play a sound so that Web Audio is unmuted
+
+				window.addEventListener('touchend', iOSUnmute, false);
+
+			}
+
+		}
 
 		jQuery.ajax({
 			type : "GET",
-			url : "/which-sounds",
+			url : "/which-sounds/" + type,
 			success : function(data){
 
 				for(var n = 0; n < data.files.length; n += 1){
@@ -301,7 +326,7 @@ var __alfabeat = (function(){
 
 	function init(){
 		
-		context = new window.AudioContext();
+		context = new window.audioContext();
 		socket = io.connect(window.location.href);
 		console.log(socket);
 
