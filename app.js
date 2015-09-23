@@ -19,8 +19,6 @@ for(var _ = 0; _ < process.argv.length; _ += 1){
 
 }
 
-// io.set('origins', '*:*');
-
 app.use(express.static(__dirname + '/public'));
 app.use('/demo', express.static(__dirname + '/demo'));
 app.use('/sounds', express.static(__dirname + '/sounds'));
