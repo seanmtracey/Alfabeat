@@ -279,6 +279,11 @@ var __alfabeat = (function(){
 
 	function getSamples(cb){
 
+		// OGG works almost everywhere, so we'll request all of the .ogg files on our server
+		// If we can't play an OGG file, we'll request the .mp3 equivalents instead. All sounds
+		// on the server should have an MP3 and an OGG version with the exact same name - except
+		// for the file extension (.mp3/.ogg) on the end.
+
 		var audEl = document.createElement('audio'),
 			playsOGG = audEl.canPlayType('audio/ogg'),
 			type = ".ogg";
@@ -289,7 +294,6 @@ var __alfabeat = (function(){
 			if (window.navigator.userAgent.match(/iPad/i) || window.navigator.userAgent.match(/iPhone/i)) {
 
 				// This is iOS. Bind a touch event to play a sound so that Web Audio is unmuted
-
 				window.addEventListener('touchend', iOSUnmute, false);
 
 			}
