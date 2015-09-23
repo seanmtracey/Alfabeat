@@ -6,9 +6,6 @@ var express = require('express'),
 	serialport = require('serialport'),
 	io = require('socket.io').listen(server, { log: false });
 
-// t is the timeout for our test-date endpoint
-var t = undefined;
-
 for(var _ = 0; _ < process.argv.length; _ += 1){
 
 	if(process.argv[_] === "--port" || process.argv[_] === "-port" || process.argv[_] === "-p"){
@@ -63,140 +60,123 @@ app.get('/which-sounds', function(req, res){
 
 });
 
-app.get('/test-stop', function(req, res){
-
-	clearInterval(t);
-
-	res.send("Test Ended");
-
-});
-
-app.get('/test-data', function(req, res){
-
-	t = setInterval(function(){
-
-		var spoofData = [0,0,0,0,0,0];
-
-		for(var s = 0;  s < spoofData.length; s += 1){
-
-			spoofData[s] = Math.random() * 1000 | 0;
-
-			(Math.random() < 0.3) ? spoofData[s] = 0 : spoofData[s] = spoofData[s];
-
-		}
-
-		console.log(spoofData);
-
-		io.sockets.emit('drums', {
-			values : spoofData
-		});
-
-	}, 5);
-
-	res.send("Running Test");
-
-});
-
 io.sockets.on('connection', function (socket) {
 
 	console.log("A connection was made over WebSockets");
 
 });
 
+
+
 serialport.list(function (err, ports) {
 
 	console.log("\nAvailable serial devices:\n");
 
-	ports.forEach(function(port) {
-		console.log(port.comName);
-	});
+	// Not everyone understands or knows how to access the details of devices that can 
+	// connect with a serial port, so we'll give them a handy list they can choose from.
 
-	console.log('\n');
+	for(var g = 0; g < ports.length; g += 1){
 
-});
+		console.log(g + ") " + ports[g].comName);
 
-// Connect to the Arduino using the serial port. The \n delimiter will act as EOI for each data burst
-
-var serialConnection = new serialport.SerialPort("/dev/tty.usbmodem1411", {
-  baudrate: 115200,
-  parser: serialport.parsers.readline("\n")
-}, false);
-
-var avgCount = 0,
-	avgAmt = 20,
-	averages = [];
-
-// Open a connection to the Arduino to access the serial data it's streaming out
-
-serialConnection.open(function(err){
-
-	if(err){
-		console.log("An error occurred connecting to the Arduino");
-		console.log(err);
-		return;
 	}
 
-	console.log("Opened serial connection to Arduino");
+	var stdin = process.stdin, stdout = process.stdout;
 
-	// When we get data, split the string up into an array every time there is a space 
+	stdin.resume();
+	stdout.write("Enter the number of the device you would like to use: ");
 
-	serialConnection.on('data', function(data){
+	stdin.once('data', function(data) {
+		var deviceNumber = parseInt(data);
 
-		// 'data' should look something like "3 1024 80 248 1 1 0"
-		// One value for each analog pin registered;
+		console.log("Attempting to connect to device: " + deviceNumber);
 
-		var d = data.split(' ');
+		// Connect to the Arduino using the serial port. The \n delimiter will act as EOI for each data burst
 
-		// The last value is \n. Get rid of it.
-		d.pop();
+		var serialConnection = new serialport.SerialPort(ports[deviceNumber].comName, {
+		  baudrate: 115200,
+		  parser: serialport.parsers.readline("\n")
+		}, false);
 
-		// We want to send the average of a number of reading over time to our client
-		// If this is the first time in this loop that we're recieveing data, reset the array
-		// values to 0
-
-		if(avgCount === 0){
-
-			for(var g = 0; g < d.length; g += 1){
-				averages[g] = 0;
-			}
-
-		}
-
-		// If we have not yet got enough values to make an average, add the latest value to the
-		// averages array.
-
-		if(avgCount < avgAmt){
-
-			for(var j = 0; j < d.length; j += 1){
-
-				averages[j] += parseInt(d[j]);
-
-			}
-
-			avgCount += 1;
-
-		} else if(avgCount === avgAmt){
-
-			// If we do have enough values to get an average reading, divivd the values by the 
-			// number of samples taken and round them off ( '| 0' does the rounding)
-
-			for(var k = 0; k < averages.length; k += 1){
-
-				averages[k] = parseInt(averages[k] / avgAmt) | 0;
-
-			}
-
-			// Send the data to all listening clients and reset the values
-
-			io.sockets.emit('drums', {
-				values : averages
-			});
-
-			avgCount = 0;
+		var avgCount = 0,
+			avgAmt = 20,
 			averages = [];
 
-		}
-		
+		// Open a connection to the Arduino to access the serial data it's streaming out
+
+		serialConnection.open(function(err){
+
+			if(err){
+				console.log("An error occurred connecting to the Arduino... Exiting script...");
+				console.log("The error was:\n\t", err);
+				process.exit(1);
+			}
+
+			console.log("Opened serial connection to Arduino");
+
+			// When we get data, split the string up into an array every time there is a space 
+
+			serialConnection.on('data', function(data){
+
+				// 'data' should look something like "3 1024 80 248 1 1 0"
+				// One value for each analog pin registered;
+
+				var d = data.split(' ');
+
+				// The last value is \n. Get rid of it.
+				d.pop();
+
+				// We want to send the average of a number of reading over time to our client
+				// If this is the first time in this loop that we're recieveing data, reset the array
+				// values to 0
+
+				if(avgCount === 0){
+
+					for(var g = 0; g < d.length; g += 1){
+						averages[g] = 0;
+					}
+
+				}
+
+				// If we have not yet got enough values to make an average, add the latest value to the
+				// averages array.
+
+				if(avgCount < avgAmt){
+
+					for(var j = 0; j < d.length; j += 1){
+
+						averages[j] += parseInt(d[j]);
+
+					}
+
+					avgCount += 1;
+
+				} else if(avgCount === avgAmt){
+
+					// If we do have enough values to get an average reading, divivd the values by the 
+					// number of samples taken and round them off ( '| 0' does the rounding)
+
+					for(var k = 0; k < averages.length; k += 1){
+
+						averages[k] = parseInt(averages[k] / avgAmt) | 0;
+
+					}
+
+					// Send the data to all listening clients and reset the values
+
+					io.sockets.emit('drums', {
+						values : averages
+					});
+
+					avgCount = 0;
+					averages = [];
+
+				}
+				
+
+			});
+
+		});
 
 	});
 
