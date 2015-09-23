@@ -60,6 +60,41 @@ app.get('/which-sounds', function(req, res){
 
 });
 
+app.get('/test-stop', function(req, res){
+
+	clearInterval(t);
+
+	res.send("Test Ended");
+
+});
+
+app.get('/test-data', function(req, res){
+
+	t = setInterval(function(){
+
+		var spoofData = [0,0,0,0,0,0];
+
+		for(var s = 0;  s < spoofData.length; s += 1){
+
+			spoofData[s] = Math.random() * 1000 | 0;
+
+			(Math.random() < 0.3) ? spoofData[s] = 0 : spoofData[s] = spoofData[s];
+
+		}
+
+		console.log(spoofData);
+
+		io.sockets.emit('drums', {
+			values : spoofData
+		});
+
+	}, 5);
+
+	res.send("Running Test");
+
+});
+
+
 io.sockets.on('connection', function (socket) {
 
 	console.log("A connection was made over WebSockets");
