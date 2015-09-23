@@ -331,7 +331,7 @@ var __alfabeat = (function(){
 	function init(){
 		
 		context = new window.audioContext();
-		socket = io.connect(window.location.href);
+		socket = io.connect(window.location.origin);
 		console.log(socket);
 
 		silhouette = document.getElementById('silhouette');
