@@ -36,31 +36,33 @@ console.log("Server started.\nAvailable on localhost:" + port);
 // of the project and send the list back to the client as a JSON response
 // The client then loads the resources statically.
 
+const sounds = fs.readdirSync(__dirname + '/sounds').map(sound => {
+		return '/sounds/' + sound;
+	})
+;
+
 app.get('/which-sounds/:type', function(req, res){
 
 	var files = fs.readdir(__dirname + '/sounds', function(error, files){
 
 		console.log(files);
+		
+		if(req.params.type !== undefined){
 
-		var fullPathFiles = [];
+			res.json({
+				files : sounds.filter(sound => {
+					return sound.indexOf(req.params.type) > -1
+				})
+			});
 
-		for(var x = 0; x < files.length; x += 1){
-
-			if(req.params.type !== undefined){
-
-				if(files[x].indexOf(req.params.type) > -1){
-					fullPathFiles.push('/sounds/' + files[x]);
-				}
-
-			} else if(files[x].indexOf(".ogg") > -1){
-				fullPathFiles[x].push('/sounds/' + files[x]);
-			}
-
+		} else if(files[x].indexOf(".ogg") > -1){
+			res.json({
+				files : sounds.filter(sound => {
+					return sound.indexOf(".ogg")> -1
+				})
+			});
 		}
-
-		res.json({
-			files : fullPathFiles
-		});
+		
 
 	});
 
