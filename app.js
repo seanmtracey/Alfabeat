@@ -216,7 +216,7 @@ function handleDevice(err, ports){
 					}
 
 					// Send the data to all listening clients and reset the values
-
+					console.log(averages);
 					io.sockets.emit('drums', {
 						values : averages
 					});

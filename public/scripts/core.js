@@ -31,23 +31,23 @@ var __alfabeat = (function(){
 
 	// Where do we draw the indicators on our canvas
 	var indicatorPositions = [{
-			x : 119,
-			y : 174
+			x : 120,
+			y : 125
+		},{
+			x : 120,
+			y : 75
+		},{
+			x : 120,
+			y : 175
 		},{
 			x : 25,
-			y : 174
+			y : 75
 		},{
-			x : 72,
-			y : 123
+			x : 25,
+			y : 175
 		},{
-			x : 118,
-			y : 74
-		},{
-			x : 26,
-			y : 73
-		},{
-			x : 72,
-			y : 20
+			x : 25,
+			y : 125
 		}
 	];
 
